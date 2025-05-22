@@ -35,7 +35,7 @@ class IngestionPipeline {
         this.vectorStore = vectorStore;
     }
 
-    @PostConstruct
+//    @PostConstruct
     void run() {
 //        List<Document> documents = new ArrayList<>();
 

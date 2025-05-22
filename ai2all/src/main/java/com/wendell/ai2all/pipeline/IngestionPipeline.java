@@ -31,15 +31,18 @@ class IngestionPipeline {
     @Value("classpath:documents/story2.md")
     Resource file2;
 
+    @Value("classpath:documents/deepseek_finacial_note.md")
+    Resource file3;
+
     IngestionPipeline(VectorStore vectorStore) {
         this.vectorStore = vectorStore;
     }
 
 //    @PostConstruct
     void run() {
-//        List<Document> documents = new ArrayList<>();
+        List<Document> documents = new ArrayList<>();
 
-//        logger.info("Loading .md files as Documents");
+        logger.info("Loading .md files as Documents");
 //        var markdownReader1 = new MarkdownDocumentReader(file1, MarkdownDocumentReaderConfig.builder()
 //                .withAdditionalMetadata("location", "North Pole")
 //                .build());
@@ -48,25 +51,30 @@ class IngestionPipeline {
 //                .withAdditionalMetadata("location", "Italy")
 //                .build());
 //        documents.addAll(markdownReader2.get());
+
+        var markdownReader3 = new MarkdownDocumentReader(file3, MarkdownDocumentReaderConfig.builder()
+                .withAdditionalMetadata("Type", "Financial Note")
+                .build());
+        documents.addAll(markdownReader3.get());
+
+        logger.info("Creating and storing Embeddings from Documents");
+        vectorStore.add(new TokenTextSplitter().split(documents));
+
+//        List<Document> documents = List.of(
+//                new Document("Spring AI rocks!! Spring AI rocks!! Spring AI rocks!! Spring AI rocks!! Spring AI rocks!!", Map.of("meta1", "meta1")),
+//                new Document("The World is Big and Salvation Lurks Around the Corner"),
+//                new Document("You walk forward facing the past and you turn back toward the future.", Map.of("meta2", "meta2")));
 //
-//        logger.info("Creating and storing Embeddings from Documents");
-//        vectorStore.add(new TokenTextSplitter().split(documents));
-
-        List<Document> documents = List.of(
-                new Document("Spring AI rocks!! Spring AI rocks!! Spring AI rocks!! Spring AI rocks!! Spring AI rocks!!", Map.of("meta1", "meta1")),
-                new Document("The World is Big and Salvation Lurks Around the Corner"),
-                new Document("You walk forward facing the past and you turn back toward the future.", Map.of("meta2", "meta2")));
-
-        // Add the documents to PGVector
-        vectorStore.add(documents);
-
-        // Retrieve documents similar to a query
-        List<Document> results = this.vectorStore.similaritySearch(SearchRequest.builder().query("Spring").topK(5).build());
-
-        logger.info("Found {} results", results.size());
-        for (Document result : results) {
-            logger.info("Result: {}", result.getFormattedContent());
-        }
+//        // Add the documents to PGVector
+//        vectorStore.add(documents);
+//
+//        // Retrieve documents similar to a query
+//        List<Document> results = this.vectorStore.similaritySearch(SearchRequest.builder().query("Spring").topK(5).build());
+//
+//        logger.info("Found {} results", results.size());
+//        for (Document result : results) {
+//            logger.info("Result: {}", result.getFormattedContent());
+//        }
     }
 
 }

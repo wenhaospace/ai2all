@@ -7,6 +7,7 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,8 +31,8 @@ public class RagController {
     }
 
     @GetMapping("/QuestionAnswerAdvisorDemo1")
-    String generation(String userInput) {
-        String userText = "Hello, who are you? ";
+    String generation(@RequestParam("userInput") String userInput) {
+        String userText = userInput;
 
         ChatResponse response = ChatClient.builder(chatModel)
                 .build().prompt()

@@ -33,7 +33,7 @@ public class ChatController {
 
     @GetMapping("/ai")
     String generation(String userInput) {
-        userInput = "Hello, who are you? ";
+//        userInput = "Hello, who are you? ";
         var response = this.chatClient.prompt()
                 .user(userInput)
                 .call()

@@ -34,6 +34,9 @@ class IngestionPipeline {
     @Value("classpath:documents/deepseek_finacial_note.md")
     Resource file3;
 
+    @Value("classpath:documents/reclaim_mock_data/Template_RAG.md")
+    Resource reclaimFile;
+
     IngestionPipeline(VectorStore vectorStore) {
         this.vectorStore = vectorStore;
     }
@@ -52,10 +55,18 @@ class IngestionPipeline {
 //                .build());
 //        documents.addAll(markdownReader2.get());
 
-        var markdownReader3 = new MarkdownDocumentReader(file3, MarkdownDocumentReaderConfig.builder()
+//        var markdownReader3 = new MarkdownDocumentReader(file3, MarkdownDocumentReaderConfig.builder()
+//                .withAdditionalMetadata("Type", "Financial Note")
+//                .build());
+//        documents.addAll(markdownReader3.get());
+//
+//        logger.info("Creating and storing Embeddings from Documents");
+//        vectorStore.add(new TokenTextSplitter().split(documents));
+
+        var markdownReader4 = new MarkdownDocumentReader(reclaimFile, MarkdownDocumentReaderConfig.builder()
                 .withAdditionalMetadata("Type", "Financial Note")
                 .build());
-        documents.addAll(markdownReader3.get());
+        documents.addAll(markdownReader4.get());
 
         logger.info("Creating and storing Embeddings from Documents");
         vectorStore.add(new TokenTextSplitter().split(documents));
